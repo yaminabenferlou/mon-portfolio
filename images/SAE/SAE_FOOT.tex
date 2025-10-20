@@ -1,0 +1,652 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={SAE FOOT DONNEES DE LIGA},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{SAE FOOT DONNEES DE LIGA}
+\author{}
+\date{\vspace{-2.5em}2025-01-02}
+
+\begin{document}
+\maketitle
+
+Packages
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(shiny)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{1. Gestion des données}\label{gestion-des-donnuxe9es}
+
+Importation des données
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X11\_Liga }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"11\_Liga.xlsx"}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(X11\_Liga)}
+\end{Highlighting}
+\end{Shaded}
+
+Description des données
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{nrow}\NormalTok{(X11\_Liga)  }\CommentTok{\# Nombre d\textquotesingle{}observations }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 529
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ncol}\NormalTok{(X11\_Liga)  }\CommentTok{\# Nombre de variables}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 44
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(X11\_Liga))  }\CommentTok{\# Nombre de valeurs manquantes}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 7314
+\end{verbatim}
+
+Notre jeu de données regroupe 529 observations qui représentent les
+joueurs, avec 44 variables qui décrivent leurs caractéristiques
+footballistiques. Il contient également 7314 valeurs manquantes.
+
+Pour simplifier le traitement des données, nous avons décidé de
+conserver uniquement les variables essentielles à notre analyse. On a
+crée Une nouvelle base de données, appelée `data' et on a sélectionné
+que les variables d'intérêt : Club, Joueur, Buts, \%Passes, Tirs,
+PossMid, Interceptions, Gross ocaz manquée, et Note.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Préparation des données : }
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ X11\_Liga }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Club =} \FunctionTok{as.factor}\NormalTok{(Club)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    Club, Joueur, Buts, }\StringTok{\textasciigrave{}}\AttributeTok{\%Passes}\StringTok{\textasciigrave{}}\NormalTok{, Tirs, PossMid, Interceptions, }
+    \StringTok{\textasciigrave{}}\AttributeTok{Gross ocaz manquée}\StringTok{\textasciigrave{}}\NormalTok{, Note}
+\NormalTok{  )}
+\FunctionTok{View}\NormalTok{(data)  }\CommentTok{\# Aperçu des données traitées}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Analyse descriptive}\label{analyse-descriptive}
+
+Dans un premier temps, nous avons calculé la proportion de joueurs par
+poste afin de mieux comprendre la répartition des joueurs selon leurs
+positions sur le terrain.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{jr\_poste }\OtherTok{\textless{}{-}}\NormalTok{ X11\_Liga }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Poste =} \FunctionTok{as.factor}\NormalTok{(Poste)) }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{group\_by}\NormalTok{(Poste) }\SpecialCharTok{\%\textgreater{}\%}                  
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{Effectif =} \FunctionTok{n}\NormalTok{(),                     }\CommentTok{\# Effectif total par poste}
+    \AttributeTok{Proportion =} \FunctionTok{n}\NormalTok{() }\SpecialCharTok{/} \FunctionTok{nrow}\NormalTok{(data)       }\CommentTok{\# Proportion de joueurs par poste}
+\NormalTok{  )}
+\FunctionTok{print}\NormalTok{(jr\_poste)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+##   Poste Effectif Proportion
+##   <fct>    <int>      <dbl>
+## 1 A          107      0.202
+## 2 DC          90      0.170
+## 3 DL          87      0.164
+## 4 G           58      0.110
+## 5 MD          83      0.157
+## 6 MO         104      0.197
+\end{verbatim}
+
+On constate que les attaquants (A) représentent le poste le plus
+fréquent, avec 107 joueurs, soit 20,2 \% de l'effectif total. Viennent
+ensuite les défenseurs centraux (DC) avec 90 joueurs, représentant 17,0
+\% de l'effectif. Les défenseurs latéraux (DL) comptent 87 joueurs, soit
+16,4 \%, tandis que les milieux offensifs (MO) regroupent 104 joueurs,
+représentant 19,7 \% du total. Les milieux défensifs (MD) sont
+légèrement moins nombreux, avec 83 joueurs, soit 15,7 \%. Enfin, les
+gardiens (G) sont les moins nombreux, avec 58 joueurs, soit 11,0 \% de
+l'ensemble.
+
+Afin de comparer les performances entre clubs et d'identifier des
+tendances ou des différences importantes dans le jeu des joueurs selon
+leur équipe. Nous avons créé un résumé statistique
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resum\_stat }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(Club) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summary}\NormalTok{()  }\CommentTok{\# Moyenne, médiane, etc. pour chaque club}
+\FunctionTok{print}\NormalTok{(resum\_stat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             Club        Joueur               Buts            %Passes      
+##  Las Palmas   : 29   Length:529         Min.   : 0.0000   Min.   : 16.67  
+##  Barcelona    : 28   Class :character   1st Qu.: 0.0000   1st Qu.: 72.38  
+##  Celta        : 28   Mode  :character   Median : 0.0000   Median : 78.23  
+##  Real Sociedad: 28                      Mean   : 0.7977   Mean   : 76.76  
+##  Athletic     : 27                      3rd Qu.: 1.0000   3rd Qu.: 84.85  
+##  Betis        : 27                      Max.   :16.0000   Max.   :100.00  
+##  (Other)      :362                                        NA's   :72      
+##       Tirs           PossMid      Interceptions    Gross ocaz manquée
+##  Min.   : 1.000   Min.   : 1.00   Min.   : 1.000   Min.   : 1.000    
+##  1st Qu.: 3.000   1st Qu.: 6.00   1st Qu.: 2.000   1st Qu.: 1.000    
+##  Median : 7.000   Median :12.00   Median : 6.000   Median : 1.000    
+##  Mean   : 9.828   Mean   :14.51   Mean   : 7.249   Mean   : 2.227    
+##  3rd Qu.:13.000   3rd Qu.:21.00   3rd Qu.:10.000   3rd Qu.: 3.000    
+##  Max.   :69.000   Max.   :57.00   Max.   :36.000   Max.   :13.000    
+##  NA's   :133      NA's   :110     NA's   :144      NA's   :344       
+##       Note      
+##  Min.   :0.000  
+##  1st Qu.:4.680  
+##  Median :4.950  
+##  Mean   :4.557  
+##  3rd Qu.:5.220  
+##  Max.   :7.000  
+## 
+\end{verbatim}
+
+Les buts montrent que la majorité des joueurs n'ont pas marqué, avec un
+maximum de 16 buts pour les plus performants. Pour les \% de passes, la
+majorité des joueurs réussissent bien, avec des valeurs variant entre 20
+\% et 100 \%. Les tirs varient, avec une moyenne de 9,83 et un maximum
+de 69 tirs pour certains joueurs prolifiques. Les joueurs ayant une
+forte implication au milieu de terrain ont une moyenne de 14,51, mais
+certains jouent un rôle plus central avec un maximum de 57. Concernant
+les interceptions, la médiane est de 6, tandis que le maximum atteint
+36, montrant l'activité de certains joueurs en récupération. La plupart
+des joueurs ont raté peu d'occasions, avec une médiane de 1 et un
+maximum de 13. Enfin, les notes varient de 0 à 7, la moyenne étant de
+4,56, indiquant que la plupart des joueurs sont légèrement au-dessus de
+la moyenne.
+
+Pour mieux comprendre les performances offensives, nous avons d'abord
+créé un code pour analyser le nombre total de buts marqués par chaque
+club, en les regroupant et en les triant en fonction de leur performance
+offensive. en regroupant les données et en triant les clubs par
+performance offensive. Ensuite, nous avons filtré les clubs ayant marqué
+plus de 25 buts afin de sélectionner les meilleurs clubs pour une
+analyse plus approfondie.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Nombre de buts par club}
+\NormalTok{but\_club }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Club) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{nb\_buts =} \FunctionTok{sum}\NormalTok{(Buts)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(nb\_buts))  }\CommentTok{\# Tri des clubs par nombre total de buts}
+\FunctionTok{View}\NormalTok{(but\_club)}
+
+\CommentTok{\#Les clubs ayant marqué plus de 25 buts}
+\NormalTok{buts\_club\_filtrer }\OtherTok{\textless{}{-}}\NormalTok{ but\_club }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(nb\_buts }\SpecialCharTok{\textgreater{}} \DecValTok{25}\NormalTok{)}
+\NormalTok{buts\_club\_filtrer}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 2
+##   Club        nb_buts
+##   <fct>         <dbl>
+## 1 Barcelona        50
+## 2 Real Madrid      37
+## 3 Atlético         31
+## 4 Athletic         27
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{View}\NormalTok{(buts\_club\_filtrer)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#La moyenne des buts des meilleurs clubs}
+\NormalTok{moyenne\_buts }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(buts\_club\_filtrer}\SpecialCharTok{$}\NormalTok{nb\_buts)}
+\NormalTok{moyenne\_buts}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 36.25
+\end{verbatim}
+
+La moyenne des buts marqués par les clubs filtrés est de 36,25
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Visualisation des buts par club avec ggplot2}
+\FunctionTok{ggplot}\NormalTok{(buts\_club\_filtrer) }\SpecialCharTok{+}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(Club, }\SpecialCharTok{{-}}\NormalTok{nb\_buts), }\AttributeTok{y =}\NormalTok{ nb\_buts, }\AttributeTok{fill =}\NormalTok{ Club) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Barcelona"} \OtherTok{=} \StringTok{"\#A50044"}\NormalTok{,}
+    \StringTok{"Real Madrid"} \OtherTok{=} \StringTok{"\#FEBE10"}\NormalTok{,}
+    \StringTok{"Atlético"} \OtherTok{=} \StringTok{"\#0A3DFF"}\NormalTok{,}
+    \StringTok{"Athletic"} \OtherTok{=} \StringTok{"\#E41F26"}
+\NormalTok{  )) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Proportion de buts par Club"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Saison 2024{-}2025"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Club"}\NormalTok{, }
+    \AttributeTok{y =} \StringTok{"Nombre de buts"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{18}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{14}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{size =} \DecValTok{12}\NormalTok{),}
+    \AttributeTok{axis.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{14}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{,}
+    \AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{panel.border =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{fill =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.8}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =}\NormalTok{ moyenne\_buts, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{size =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+## i Please use the `linewidth` argument instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## i Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{SAE_FOOT_files/figure-latex/unnamed-chunk-8-1.pdf}}
+Grâce à ce graphique on peut visualiser le nombre de buts marqués par
+les quatre meilleurs clubs durant la saison 2024-2025. Barcelone se
+distingue clairement en dépassant la moyenne avec environ 45 buts,
+tandis que les autres clubs sont tous en dessous, avec Athletic en
+dernière position.
+
+Pour avoir un aperçu des styles de jeu des équipes et de leur capacité à
+créer des opportunités offensives.Nous avons calculer de la proportion
+de passes par club.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcul et visualisation de la proportion de passes par club}
+\NormalTok{prop\_passe\_par\_club }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(Club) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{prop\_passes =} \FunctionTok{sum}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{\%Passes}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm =}\NormalTok{ T) }\SpecialCharTok{/} \FunctionTok{n}\NormalTok{())}
+\FunctionTok{View}\NormalTok{(prop\_passe\_par\_club)}
+
+
+\FunctionTok{View}\NormalTok{(prop\_passe\_par\_club)}
+\end{Highlighting}
+\end{Shaded}
+
+Un club avec une proportion de passes élevée pourrait être plus efficace
+dans la création d'occasions de but, même si ce n'est pas directement
+lié au nombre de buts.
+
+On peut se demander si les clubs avec une meilleure proportion de passes
+réussies marquent-ils plus de buts ?
+
+D'aprés les résultat Barcelone semble convertir efficacement ses passes
+en occasions de buts.Le Real Madrid a une proportion de passes
+exceptionnelle mais ne domine pas en nombre de buts, ce qui indique
+d'autres limites dans leur jeu offensif. Atlético et Athletic marquent
+peu malgré des proportions de passes correctes, semblent dépendre
+d'autres facteurs comme la qualité des tirs ou les tactiques pour
+convertir leurs actions en buts.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Pour réaliser les boîtes à moustaches :}
+\CommentTok{\# Analyse et visualisation des clubs spécifiques}
+\NormalTok{clubs\_specifiques }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Barcelona"}\NormalTok{, }\StringTok{"Real Madrid"}\NormalTok{, }\StringTok{"Atlético"}\NormalTok{, }\StringTok{"Athletic Bilbao"}\NormalTok{)}
+
+\NormalTok{buts\_club\_filtrer\_selection }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Club }\SpecialCharTok{\%in\%}\NormalTok{ clubs\_specifiques) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Buts))}
+\CommentTok{\# Liste des clubs à comparer}
+\NormalTok{clubs\_specifiques }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Barcelona"}\NormalTok{, }\StringTok{"Real Madrid"}\NormalTok{, }\StringTok{"Atlético"}\NormalTok{, }\StringTok{"Athletic"}\NormalTok{)}
+\CommentTok{\# Filtrer les données pour les clubs spécifiés}
+\NormalTok{data\_clubs\_specifiques }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Club }\SpecialCharTok{\%in\%}\NormalTok{ clubs\_specifiques)}
+
+\CommentTok{\# Visualisation des pourcentages de passes avec un boxplot}
+\FunctionTok{ggplot}\NormalTok{(data\_clubs\_specifiques) }\SpecialCharTok{+}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Club, }\AttributeTok{y =} \StringTok{\textasciigrave{}}\AttributeTok{\%Passes}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{fill =}\NormalTok{ Club) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{outlier.color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{outlier.shape =} \DecValTok{16}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Barcelona"} \OtherTok{=} \StringTok{"\#A50044"}\NormalTok{,        }\CommentTok{\# Rouge grenat pour le FC Barcelone}
+    \StringTok{"Real Madrid"} \OtherTok{=} \StringTok{"\#FEBE10"}\NormalTok{,      }\CommentTok{\# Jaune doré pour le Real Madrid}
+    \StringTok{"Atlético"} \OtherTok{=} \StringTok{"\#0A3DFF"}\NormalTok{,         }\CommentTok{\# Bleu vif pour l\textquotesingle{}Atlético Madrid}
+    \StringTok{"Athletic"} \OtherTok{=} \StringTok{"\#E41F26"}   \CommentTok{\# Rouge vif pour l\textquotesingle{}Athletic Bilbao}
+\NormalTok{  )) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Distribution des pourcentages de passes par Club"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Analyse des clubs sélectionnés"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Club"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Pourcentage de Passes (\%)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{16}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{),}
+    \AttributeTok{legend.position =} \StringTok{"none"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 15 rows containing non-finite outside the scale range
+## (`stat_boxplot()`).
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{SAE_FOOT_files/figure-latex/unnamed-chunk-10-1.pdf}}
+
+Les boxplots confirment les interprétations précédentes, Barcelone se
+distingue par son efficacité et sa maîtrise technique avec des
+proportions élevées de passes réussies, tandis que le Real Madrid,
+malgré des performances similaires, montre une certaine variabilité.
+Enfin, Atlético et Athletic, avec des pourcentages plus modestes et une
+plus grande variabilité.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Analyse et visualisation des clubs spécifiques}
+\NormalTok{clubs\_specifiques }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Barcelona"}\NormalTok{, }\StringTok{"Real Madrid"}\NormalTok{, }\StringTok{"Atlético"}\NormalTok{, }\StringTok{"Athletic Bilbao"}\NormalTok{)}
+\NormalTok{buts\_club\_filtrer\_selection }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Club }\SpecialCharTok{\%in\%}\NormalTok{ clubs\_specifiques) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Buts))}
+
+\CommentTok{\#Pour réaliser le graphique de moyenne des pourcenatges de passes par club }
+\CommentTok{\# Calcul de la moyenne des pourcentages de passes pour chaque club sélectionné}
+\NormalTok{mean\_passes\_per\_club }\OtherTok{\textless{}{-}}\NormalTok{ data\_clubs\_specifiques }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Club) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{mean\_passes =} \FunctionTok{mean}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{\%Passes}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+
+\CommentTok{\# Visualisation de moyenne des pourcentages de passes par club }
+\FunctionTok{ggplot}\NormalTok{(mean\_passes\_per\_club) }\SpecialCharTok{+}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(Club, }\SpecialCharTok{{-}}\NormalTok{mean\_passes), }\AttributeTok{y =}\NormalTok{ mean\_passes, }\AttributeTok{fill =}\NormalTok{ Club) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Barcelona"} \OtherTok{=} \StringTok{"\#A50044"}\NormalTok{,        }\CommentTok{\# Rouge grenat pour le FC Barcelone}
+    \StringTok{"Real Madrid"} \OtherTok{=} \StringTok{"\#FEBE10"}\NormalTok{,      }\CommentTok{\# Jaune doré pour le Real Madrid}
+    \StringTok{"Atlético"} \OtherTok{=} \StringTok{"\#0A3DFF"}\NormalTok{,         }\CommentTok{\# Bleu vif pour l\textquotesingle{}Atlético Madrid}
+    \StringTok{"Athletic"} \OtherTok{=} \StringTok{"\#E41F26"}   \CommentTok{\# Rouge vif pour l\textquotesingle{}Athletic Bilbao}
+\NormalTok{  )) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Moyenne des pourcentages de passes par Club"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Comparaison des clubs sélectionnés"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Club"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Moyenne du pourcentage de Passes (\%)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{16}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{face =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{),}
+    \AttributeTok{legend.position =} \StringTok{"none"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{SAE_FOOT_files/figure-latex/unnamed-chunk-11-1.pdf}}
+
+Ce graphique complète et confirme également les observations
+précédentes, Barcelone et Real Madrid dominent en termes de passes
+réussies, tandis qu'Atlético et Athletic ont des performances plus
+limitées.
+
+Après avoir analysé les clubs les plus performants, nous avons décidé de
+nous concentrer sur le classement des meilleurs buteurs afin de
+comprendre quelles individualités ont eu le plus grand impact sur ces
+performances collectives
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Analyse des meilleurs buteurs du championnat}
+\NormalTok{classement\_buteurs }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Joueur) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{nb\_buts =} \FunctionTok{sum}\NormalTok{(Buts)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(nb\_buts))  }\CommentTok{\# Tri des joueurs par nombre total de buts}
+\FunctionTok{View}\NormalTok{(classement\_buteurs)}
+
+\CommentTok{\# Les meilleurs buteurs du championnat}
+\FunctionTok{View}\NormalTok{(classement\_buteurs)}
+\end{Highlighting}
+\end{Shaded}
+
+Le classement des buteurs met en tête Lewandowski avec 16 buts, suivi de
+Raphinha (11 buts) et Budimir (10 buts), tandis que Mbappé se place
+quatrième avec 9 réalisations.
+
+Pour analyser les performances des joueurs de La Liga, nous avons
+développé une interface RShiny. Cette interface permet de visualiser un
+graphique qui représente les buts marqués des joeurscpar club, tout en
+offrant la possibilité de filtrer les résultats en fonction d'un seuil
+défini.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Interface utilisateur}
+\NormalTok{ui }\OtherTok{\textless{}{-}} \FunctionTok{fluidPage}\NormalTok{(}
+  \FunctionTok{titlePanel}\NormalTok{(}\StringTok{"Analyse des données de la Liga"}\NormalTok{),}
+  \FunctionTok{sidebarLayout}\NormalTok{(}
+    \FunctionTok{sidebarPanel}\NormalTok{(}
+      \FunctionTok{selectInput}\NormalTok{(}\StringTok{"club"}\NormalTok{, }\StringTok{"Sélectionnez un club :"}\NormalTok{, }\AttributeTok{choices =} \FunctionTok{unique}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{Club)),}
+      \FunctionTok{numericInput}\NormalTok{(}\StringTok{"seuil"}\NormalTok{, }\StringTok{"Seuil de buts :"}\NormalTok{, }\AttributeTok{value =} \DecValTok{0}\NormalTok{, }\AttributeTok{min =} \DecValTok{0}\NormalTok{),}
+      \FunctionTok{actionButton}\NormalTok{(}\StringTok{"update"}\NormalTok{, }\StringTok{"Mettre à jour"}\NormalTok{)}
+\NormalTok{    ),}
+    \FunctionTok{mainPanel}\NormalTok{(}
+      \FunctionTok{plotOutput}\NormalTok{(}\StringTok{"plot\_buts"}\NormalTok{)}
+\NormalTok{    )}
+\NormalTok{  )}
+\NormalTok{)}
+
+\CommentTok{\# Serveur}
+\NormalTok{server }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(input, output) \{}
+\NormalTok{  filtered\_data }\OtherTok{\textless{}{-}} \FunctionTok{eventReactive}\NormalTok{(input}\SpecialCharTok{$}\NormalTok{update, \{}
+\NormalTok{    data }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{filter}\NormalTok{(Club }\SpecialCharTok{==}\NormalTok{ input}\SpecialCharTok{$}\NormalTok{club, Buts }\SpecialCharTok{\textgreater{}}\NormalTok{ input}\SpecialCharTok{$}\NormalTok{seuil)}
+\NormalTok{  \})}
+  
+\NormalTok{  output}\SpecialCharTok{$}\NormalTok{plot\_buts }\OtherTok{\textless{}{-}} \FunctionTok{renderPlot}\NormalTok{(\{}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{filtered\_data}\NormalTok{()) }\SpecialCharTok{+}
+      \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Joueur, }\AttributeTok{y =}\NormalTok{ Buts, }\AttributeTok{fill =}\NormalTok{ Joueur) }\SpecialCharTok{+}
+      \FunctionTok{geom\_col}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{labs}\NormalTok{(}
+        \AttributeTok{title =} \FunctionTok{paste}\NormalTok{(}\StringTok{"Nombre de buts pour"}\NormalTok{, input}\SpecialCharTok{$}\NormalTok{club),}
+        \AttributeTok{x =} \StringTok{"Joueur"}\NormalTok{,}
+        \AttributeTok{y =} \StringTok{"Buts"}
+\NormalTok{      ) }\SpecialCharTok{+}
+      \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{theme}\NormalTok{(}
+        \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{) }\CommentTok{\# Inclinaison des noms}
+\NormalTok{      )}
+\NormalTok{  \})}
+\NormalTok{\}}
+
+\CommentTok{\#Interface Rshiny}
+\FunctionTok{shinyApp}\NormalTok{(}\AttributeTok{ui =}\NormalTok{ ui, }\AttributeTok{server =}\NormalTok{ server)}
+\end{Highlighting}
+\end{Shaded}
+
+Pour mettre en évidence les liens potentiels entre la performance des
+joueurs (mesurée par leur note) et leur efficacité offensive (nombre de
+buts marqués) nous avons décidé de faire un graphique qui met en
+relation ces deux variables avec une ligne de régression qui suggère la
+tendance moyenne de la relation entre les deux variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data) }\SpecialCharTok{+}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Note, }\AttributeTok{y =}\NormalTok{ Buts) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"\#FF5733"}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}  \CommentTok{\# Points avec une opacité}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{color =} \StringTok{"\#33A1FF"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}  \CommentTok{\# Ligne de régression}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Relation entre la note et les buts marqués"}\NormalTok{, }\AttributeTok{x =} \StringTok{"Note"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Buts"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}  \CommentTok{\# Application d\textquotesingle{}un thème minimal}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{16}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),  }\CommentTok{\# Titre centré et stylisé}
+    \AttributeTok{axis.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{axis.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{10}\NormalTok{),}
+    \AttributeTok{panel.grid.major =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"gray"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.5}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{coord\_cartesian}\NormalTok{(}\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\FunctionTok{min}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{Note) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{, }\FunctionTok{max}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{Note) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{))  }\CommentTok{\# Ajuster les limites des axes si nécessaire}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+## i Please use the `linewidth` argument instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+\end{verbatim}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{SAE_FOOT_files/figure-latex/unnamed-chunk-14-1.pdf}}
+
+On constate une légère relation positive qui semble exister entre la
+note et le nombre de buts marqués. Cela signifie que les joueurs ayant
+une note plus élevée ont tendance à marquer plus de buts. La majorité
+des joueurs ont une note comprise entre 4 et 6. La plupart des joueurs
+marquent peu de buts (entre 0 et 5). Certains joueurs (avec une note
+autour de 6) se distinguent en marquant un nombre élevé de buts (plus de
+10).
+
+On peut dire qu'il existe une corrélation modérée entre la performance
+(note) et le nombre de buts, mais de nombreux joueurs ayant des notes
+élevées ne marquent pas nécessairement beaucoup de buts.
+
+\end{document}

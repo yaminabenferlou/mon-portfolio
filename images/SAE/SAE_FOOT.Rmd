@@ -1,0 +1,344 @@
+---
+title: "SAE FOOT DONNEES DE LIGA"
+output:
+  pdf_document: default
+  html_document: default
+date: "2025-01-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Packages 
+
+```{r packages, message=FALSE, warning=FALSE}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(shiny)
+```
+# 1. Gestion des données
+Importation des données 
+```{r}
+X11_Liga <- read_excel("11_Liga.xlsx")
+View(X11_Liga)
+```
+
+Description des données 
+```{r}
+nrow(X11_Liga)  # Nombre d'observations 
+ncol(X11_Liga)  # Nombre de variables
+sum(is.na(X11_Liga))  # Nombre de valeurs manquantes
+```
+Notre jeu de données regroupe 529 observations qui représentent les joueurs, avec 44 variables qui décrivent leurs caractéristiques footballistiques. Il contient également 7314 valeurs manquantes.
+
+
+
+Pour simplifier le traitement des données, nous avons décidé de conserver uniquement les variables essentielles à notre analyse. On a crée Une nouvelle base de données, appelée 'data' et on a sélectionné que les variables d’intérêt : Club, Joueur, Buts, %Passes, Tirs, PossMid, Interceptions, Gross ocaz manquée, et Note.
+
+```{r}
+# Préparation des données : 
+data <- X11_Liga %>% 
+  mutate(Club = as.factor(Club)) %>% 
+  select(
+    Club, Joueur, Buts, `%Passes`, Tirs, PossMid, Interceptions, 
+    `Gross ocaz manquée`, Note
+  )
+View(data)  # Aperçu des données traitées
+
+```
+
+# Analyse descriptive
+
+Dans un premier temps, nous avons calculé la proportion de joueurs par poste afin de mieux comprendre la répartition des joueurs selon leurs positions sur le terrain. 
+
+
+```{r}
+jr_poste <- X11_Liga %>% 
+  mutate(Poste = as.factor(Poste)) %>%  
+  group_by(Poste) %>%                  
+  summarise(
+    Effectif = n(),                     # Effectif total par poste
+    Proportion = n() / nrow(data)       # Proportion de joueurs par poste
+  )
+print(jr_poste)
+```
+On constate que les attaquants (A) représentent le poste le plus fréquent, avec 107 joueurs, soit 20,2 % de l’effectif total. Viennent ensuite les défenseurs centraux (DC) avec 90 joueurs, représentant 17,0 % de l’effectif. Les défenseurs latéraux (DL) comptent 87 joueurs, soit 16,4 %, tandis que les milieux offensifs (MO) regroupent 104 joueurs, représentant 19,7 % du total. Les milieux défensifs (MD) sont légèrement moins nombreux, avec 83 joueurs, soit 15,7 %. Enfin, les gardiens (G) sont les moins nombreux, avec 58 joueurs, soit 11,0 % de l’ensemble.
+
+
+Afin de comparer les performances entre clubs et d'identifier des tendances ou des différences importantes dans le jeu des joueurs selon leur équipe. Nous avons créé un résumé statistique
+
+```{r}
+resum_stat <- data %>% 
+  group_by(Club) %>% 
+  summary()  # Moyenne, médiane, etc. pour chaque club
+print(resum_stat)
+```
+Les buts montrent que la majorité des joueurs n’ont pas marqué, avec un maximum de 16 buts pour les plus performants. Pour les % de passes, la majorité des joueurs réussissent bien, avec des valeurs variant entre 20 % et 100 %. Les tirs varient, avec une moyenne de 9,83 et un maximum de 69 tirs pour certains joueurs prolifiques. Les joueurs ayant une forte implication au milieu de terrain ont une moyenne de 14,51, mais certains jouent un rôle plus central avec un maximum de 57. Concernant les interceptions, la médiane est de 6, tandis que le maximum atteint 36, montrant l'activité de certains joueurs en récupération. La plupart des joueurs ont raté peu d'occasions, avec une médiane de 1 et un maximum de 13. Enfin, les notes varient de 0 à 7, la moyenne étant de 4,56, indiquant que la plupart des joueurs sont légèrement au-dessus de la moyenne.
+
+
+
+Pour mieux comprendre les performances offensives, nous avons d'abord créé un code pour analyser le nombre total de buts marqués par chaque club, en les regroupant et en les triant en fonction de leur performance offensive. en regroupant les données et en triant les clubs par performance offensive. Ensuite, nous avons filtré les clubs ayant marqué plus de 25 buts afin de sélectionner les meilleurs clubs pour une analyse plus approfondie.
+
+```{r}
+#Nombre de buts par club
+but_club <- data %>%
+  group_by(Club) %>% 
+  summarise(nb_buts = sum(Buts)) %>% 
+  arrange(desc(nb_buts))  # Tri des clubs par nombre total de buts
+View(but_club)
+
+#Les clubs ayant marqué plus de 25 buts
+buts_club_filtrer <- but_club %>% 
+  filter(nb_buts > 25)
+buts_club_filtrer
+View(buts_club_filtrer)
+```
+
+
+```{r}
+#La moyenne des buts des meilleurs clubs
+moyenne_buts <- mean(buts_club_filtrer$nb_buts)
+moyenne_buts
+```
+La moyenne des buts marqués par les clubs filtrés est de 36,25
+
+
+```{r}
+
+
+# Visualisation des buts par club avec ggplot2
+ggplot(buts_club_filtrer) +
+  aes(x = reorder(Club, -nb_buts), y = nb_buts, fill = Club) +
+  geom_col(alpha = 0.7) +
+  scale_fill_manual(values = c(
+    "Barcelona" = "#A50044",
+    "Real Madrid" = "#FEBE10",
+    "Atlético" = "#0A3DFF",
+    "Athletic" = "#E41F26"
+  )) +
+  labs(
+    title = "Proportion de buts par Club",
+    subtitle = "Saison 2024-2025",
+    x = "Club", 
+    y = "Nombre de buts"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 14, face = "italic", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+    axis.title = element_text(size = 14, face = "bold"),
+    legend.position = "none",
+    panel.grid = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 0.8)
+  ) +
+  geom_hline(yintercept = moyenne_buts, linetype = "dashed", color = "red", size = 1)
+
+```
+Grâce à ce graphique on peut visualiser le nombre de buts marqués par les quatre meilleurs clubs durant la saison 2024-2025. 
+Barcelone se distingue clairement en dépassant la moyenne avec environ 45 buts, tandis que les autres clubs sont tous en dessous, avec Athletic en dernière position. 
+
+Pour avoir un aperçu des styles de jeu des équipes et de leur capacité à créer des opportunités offensives.Nous avons calculer de la proportion de passes par club.
+
+
+```{r}
+# Calcul et visualisation de la proportion de passes par club
+prop_passe_par_club <- data %>% 
+  group_by(Club) %>% 
+  summarise(prop_passes = sum(`%Passes`, na.rm = T) / n())
+View(prop_passe_par_club)
+
+
+View(prop_passe_par_club)
+
+```
+Un club avec une proportion de passes élevée pourrait être plus efficace dans la création d’occasions de but, même si ce n’est pas directement lié au nombre de buts.
+
+On peut se demander si les clubs avec une meilleure proportion de passes réussies marquent-ils plus de buts ?
+
+D'aprés les résultat Barcelone semble convertir efficacement ses passes en occasions de buts.Le Real Madrid a une proportion de passes exceptionnelle mais ne domine pas en nombre de buts, ce qui indique d'autres limites dans leur jeu offensif.
+Atlético et Athletic marquent peu malgré des proportions de passes correctes, semblent dépendre d’autres facteurs comme la qualité des tirs ou les tactiques pour convertir leurs actions en buts.
+
+
+```{r}
+#Pour réaliser les boîtes à moustaches :
+# Analyse et visualisation des clubs spécifiques
+clubs_specifiques <- c("Barcelona", "Real Madrid", "Atlético", "Athletic Bilbao")
+
+buts_club_filtrer_selection <- data %>%
+  filter(Club %in% clubs_specifiques) %>% 
+  arrange(desc(Buts))
+# Liste des clubs à comparer
+clubs_specifiques <- c("Barcelona", "Real Madrid", "Atlético", "Athletic")
+# Filtrer les données pour les clubs spécifiés
+data_clubs_specifiques <- data %>%
+  filter(Club %in% clubs_specifiques)
+
+# Visualisation des pourcentages de passes avec un boxplot
+ggplot(data_clubs_specifiques) +
+  aes(x = Club, y = `%Passes`, fill = Club) +
+  geom_boxplot(alpha = 0.7, outlier.color = "red", outlier.shape = 16) +
+  scale_fill_manual(values = c(
+    "Barcelona" = "#A50044",        # Rouge grenat pour le FC Barcelone
+    "Real Madrid" = "#FEBE10",      # Jaune doré pour le Real Madrid
+    "Atlético" = "#0A3DFF",         # Bleu vif pour l'Atlético Madrid
+    "Athletic" = "#E41F26"   # Rouge vif pour l'Athletic Bilbao
+  )) +
+  labs(
+    title = "Distribution des pourcentages de passes par Club",
+    subtitle = "Analyse des clubs sélectionnés",
+    x = "Club",
+    y = "Pourcentage de Passes (%)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, face = "italic", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+    legend.position = "none"
+  )
+
+```
+
+Les boxplots confirment les interprétations précédentes, Barcelone se distingue par son efficacité et sa maîtrise technique avec des proportions élevées de passes réussies, tandis que le Real Madrid, malgré des performances similaires, montre une certaine variabilité. Enfin, Atlético et Athletic, avec des pourcentages plus modestes et une plus grande variabilité.
+
+
+
+
+
+```{r}
+
+# Analyse et visualisation des clubs spécifiques
+clubs_specifiques <- c("Barcelona", "Real Madrid", "Atlético", "Athletic Bilbao")
+buts_club_filtrer_selection <- data %>%
+  filter(Club %in% clubs_specifiques) %>% 
+  arrange(desc(Buts))
+
+#Pour réaliser le graphique de moyenne des pourcenatges de passes par club 
+# Calcul de la moyenne des pourcentages de passes pour chaque club sélectionné
+mean_passes_per_club <- data_clubs_specifiques %>%
+  group_by(Club) %>%
+  summarise(mean_passes = mean(`%Passes`, na.rm = TRUE))
+
+# Visualisation de moyenne des pourcentages de passes par club 
+ggplot(mean_passes_per_club) +
+  aes(x = reorder(Club, -mean_passes), y = mean_passes, fill = Club) +
+  geom_col(alpha = 0.8) +
+  scale_fill_manual(values = c(
+    "Barcelona" = "#A50044",        # Rouge grenat pour le FC Barcelone
+    "Real Madrid" = "#FEBE10",      # Jaune doré pour le Real Madrid
+    "Atlético" = "#0A3DFF",         # Bleu vif pour l'Atlético Madrid
+    "Athletic" = "#E41F26"   # Rouge vif pour l'Athletic Bilbao
+  )) +
+  labs(
+    title = "Moyenne des pourcentages de passes par Club",
+    subtitle = "Comparaison des clubs sélectionnés",
+    x = "Club",
+    y = "Moyenne du pourcentage de Passes (%)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, face = "italic", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+    legend.position = "none"
+  )
+
+```
+
+Ce graphique complète et confirme également les observations précédentes,  Barcelone et Real Madrid dominent en termes de passes réussies, tandis qu’Atlético et Athletic ont des performances plus limitées.
+
+
+Après avoir analysé les clubs les plus performants, nous avons décidé de nous concentrer sur le classement des meilleurs buteurs afin de comprendre quelles individualités ont eu le plus grand impact sur ces performances collectives
+
+
+```{r}
+# Analyse des meilleurs buteurs du championnat
+classement_buteurs <- data %>%
+  group_by(Joueur) %>% 
+  summarise(nb_buts = sum(Buts)) %>% 
+  arrange(desc(nb_buts))  # Tri des joueurs par nombre total de buts
+View(classement_buteurs)
+
+# Les meilleurs buteurs du championnat
+View(classement_buteurs)
+
+```
+
+Le classement des buteurs met en tête Lewandowski avec 16 buts, suivi de Raphinha (11 buts) et Budimir (10 buts), tandis que Mbappé se place quatrième avec 9 réalisations.
+
+
+Pour analyser les performances des joueurs de La Liga, nous avons développé une interface RShiny. 
+Cette interface permet de visualiser un graphique qui représente les buts marqués des joeurscpar club, tout en offrant la possibilité de filtrer les résultats en fonction d’un seuil défini.
+
+```{r}
+# Interface utilisateur
+ui <- fluidPage(
+  titlePanel("Analyse des données de la Liga"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("club", "Sélectionnez un club :", choices = unique(data$Club)),
+      numericInput("seuil", "Seuil de buts :", value = 0, min = 0),
+      actionButton("update", "Mettre à jour")
+    ),
+    mainPanel(
+      plotOutput("plot_buts")
+    )
+  )
+)
+
+# Serveur
+server <- function(input, output) {
+  filtered_data <- eventReactive(input$update, {
+    data %>%
+      filter(Club == input$club, Buts > input$seuil)
+  })
+  
+  output$plot_buts <- renderPlot({
+    ggplot(filtered_data()) +
+      aes(x = Joueur, y = Buts, fill = Joueur) +
+      geom_col() +
+      labs(
+        title = paste("Nombre de buts pour", input$club),
+        x = "Joueur",
+        y = "Buts"
+      ) +
+      theme_minimal() +
+      theme(
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 10) # Inclinaison des noms
+      )
+  })
+}
+
+#Interface Rshiny
+shinyApp(ui = ui, server = server)
+
+```
+Pour mettre en évidence les liens potentiels entre la performance des joueurs (mesurée par leur note) et leur efficacité offensive (nombre de buts marqués) nous avons décidé de faire un graphique qui met en relation ces deux variables avec une ligne de régression qui suggère la tendance moyenne de la relation entre les deux variables.
+
+```{r}
+ggplot(data) +
+  aes(x = Note, y = Buts) +
+  geom_point(color = "#FF5733", size = 3, alpha = 0.7) +  # Points avec une opacité
+  geom_smooth(method = "lm", color = "#33A1FF", linetype = "dashed") +  # Ligne de régression
+  labs(title = "Relation entre la note et les buts marqués", x = "Note", y = "Buts") +
+  theme_minimal() +  # Application d'un thème minimal
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Titre centré et stylisé
+    axis.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 10),
+    panel.grid.major = element_line(color = "gray", size = 0.5)
+  ) +
+  coord_cartesian(xlim = c(min(data$Note) - 1, max(data$Note) + 1))  # Ajuster les limites des axes si nécessaire
+
+```
+
+On constate une légère relation positive qui semble exister entre la note et le nombre de buts marqués. Cela signifie que les joueurs ayant une note plus élevée ont tendance à marquer plus de buts.
+  La majorité des joueurs ont une note comprise entre 4 et 6.
+  La plupart des joueurs marquent peu de buts (entre 0 et 5).
+  Certains joueurs (avec une note autour de 6) se distinguent en marquant un nombre élevé de buts (plus de 10).
+
+On peut dire qu'il existe une corrélation modérée entre la performance (note) et le nombre de buts, mais de nombreux joueurs ayant des notes élevées ne marquent pas nécessairement beaucoup de buts.
+
