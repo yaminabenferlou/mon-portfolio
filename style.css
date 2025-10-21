@@ -765,13 +765,15 @@ nav ul li a.active::after {
 /* Mobile uniquement (écran ≤ 768px) */
 @media (max-width: 768px) {
     .tools-grid {
-        flex-wrap: wrap;          /* autoriser le passage à la ligne */
+        display: flex;
+        flex-wrap: wrap;          /* autorise le passage à la ligne */
         justify-content: center;
-        gap: 20px;
+        gap: 10px;                /* espace entre les outils */
     }
 
     .tool {
-        width: calc(50% - 15px);  /* deux par ligne avec un petit gap */
+        width: 45%;               /* deux par ligne */
+        min-width: 120px;         /* largeur minimale pour que ce soit lisible */
     }
 }
 
