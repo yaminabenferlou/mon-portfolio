@@ -762,6 +762,19 @@ nav ul li a.active::after {
     transform: rotateY(180deg);
 }
 
+/* Mobile uniquement (écran ≤ 768px) */
+@media (max-width: 768px) {
+    .tools-grid {
+        flex-wrap: wrap;          /* autoriser le passage à la ligne */
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .tool {
+        width: calc(50% - 15px);  /* deux par ligne avec un petit gap */
+    }
+}
+
 
 
 /* === LANGUES & PASSIONS === */
