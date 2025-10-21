@@ -239,6 +239,14 @@
         </div>
     </div>
 </section>
+<script>
+document.querySelectorAll('.arrow-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const cardInner = btn.closest('.card-inner');
+        cardInner.classList.toggle('flipped');
+    });
+});
+</script>
 
 <section id="langues-passions" class="section-card">
     <h2>Langues & Centres d’intérêt</h2>
