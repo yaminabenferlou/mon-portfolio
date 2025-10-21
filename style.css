@@ -14,6 +14,8 @@
     --text-dark: #333;
 }
 
+
+
 /* Navbar épurée */
 /* === NAVIGATION MODERNE === */
 nav {
@@ -145,6 +147,57 @@ nav ul li a.active::after {
     }
 }
 
+@media(max-width:768px){
+    nav {
+        height: 60px;
+        padding: 0.5rem 1.5rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        width: 230px;
+        background-color: var(--primary); /* Marron de fond pour contraster */
+        padding: 1.5rem;
+        border-radius: 10px 0 0 10px;
+        gap: 1.5rem;
+        opacity: 0;
+        transition: right 0.4s ease, opacity 0.4s ease;
+    }
+
+    /* Texte clair à l’intérieur du menu mobile */
+    nav ul li a {
+        color: var(--secondary); /* Texte blanc pour lisibilité */
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    /* Survol : éclaircir un peu */
+    nav ul li a:hover {
+        color: var(--accent);
+    }
+
+    nav ul.active {
+        right: 0;
+        opacity: 1;
+    }
+
+    .burger {
+        display: flex;
+    }
+
+    .burger.active div:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    .burger.active div:nth-child(2) {
+        opacity: 0;
+    }
+    .burger.active div:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+}
 
 
 
@@ -556,6 +609,35 @@ nav ul li a.active::after {
     text-align: justify;
 }
 
+
+
+/* Côté arrière des cartes projets */
+.project-card .card-back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centre verticalement le contenu */
+    align-items: center; /* centre horizontalement le bouton */
+    text-align: left; /* aligne le texte à gauche */
+    text-align: justify; /* texte justifié */
+    padding: 20px;
+}
+
+/* Paragraphe à gauche mais bien espacé */
+.project-card .card-back p {
+    text-align: left;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    width: 100%; /* prend toute la largeur dispo */
+}
+
+/* Bouton bien centré au milieu */
+.project-card .card-back .btn-small {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
 /* Responsive */
 @media (max-width: 960px) {
     .competence-card { width: 48%; } /* 2 cartes par ligne */
@@ -801,7 +883,47 @@ nav ul li a.active::after {
     }
 }
 
+/* Style des drapeaux dans les langues */
+.flag {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1.2rem;
+    background-color: rgba(102, 51, 0, 0.1);
+    color: var(--primary);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: bold;
+    min-width: 28px;
+    text-align: center;
+}
 
+.langue-item {
+    display: flex;
+    justify-content: space-between; /* garde le niveau à droite */
+    align-items: center;
+    background-color: #f7f7f7;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Conteneur drapeau + texte à gauche */
+.langue-info {
+    display: flex;
+    align-items: center;  /* centre verticalement */
+    gap: 8px;             /* espace entre drapeau et texte */
+}
+
+/* Taille du drapeau */
+.langue-info img {
+    width: 24px;
+    height: 16px;
+    object-fit: cover;
+    border-radius: 2px;
+}
 
 
 
